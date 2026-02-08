@@ -1,3 +1,4 @@
 camoufox
 langchain
 langchain-ollama
+python-dotenv

@@ -1,9 +1,13 @@
 import random
 import time
 import sqlite3
+import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
+
+load_dotenv()
 from camoufox.sync_api import Camoufox
 from langchain_ollama import ChatOllama
 
@@ -11,8 +15,9 @@ from langchain_ollama import ChatOllama
 DB_NAME = "jobs.db"
 SMTP_SERVER = "smtp.gmail.com" # Example
 SMTP_PORT = 587
-SMTP_USER = "your_email@gmail.com" # Placeholder
-SMTP_PASS = "your_app_password"      # Placeholder
+SMTP_USER = os.getenv("EMAIL_ADDRESS")
+SMTP_PASS = os.getenv("EMAIL_PASSWORD")
+RECEIVER_EMAIL = "arunkumar.2645s@gmail.com"
 
 USER_PREFS = {
     "target_role_keywords": ["Software", "Developer", "Engineer", "Testing", "Python", "Web"],
@@ -85,7 +90,7 @@ class JobAnalyzer:
 def send_email(job_data, score):
     msg = MIMEMultipart()
     msg['From'] = SMTP_USER
-    msg['To'] = SMTP_USER # Send to self for now
+    msg['To'] = RECEIVER_EMAIL
     msg['Subject'] = f"High Match Job Found! ({score}/100): {job_data[1]}" # Title
     
     body = f"""
@@ -108,7 +113,7 @@ def send_email(job_data, score):
         server.login(SMTP_USER, SMTP_PASS)
         server.send_message(msg)
         server.quit()
-        print(f"[+] Email sent successfully to {SMTP_USER} for job: {job_data[1]}")
+        print(f"[+] Email sent successfully to {RECEIVER_EMAIL} for job: {job_data[1]}")
     except Exception as e:
         print(f"[-] Email Error: {e}")
 
