@@ -17,7 +17,7 @@ SMTP_SERVER = "smtp.gmail.com" # Example
 SMTP_PORT = 587
 SMTP_USER = os.getenv("EMAIL_ADDRESS")
 SMTP_PASS = os.getenv("EMAIL_PASSWORD")
-RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
+RECEIVER_EMAIL = os.getenv("RECEIVER")
 
 USER_PREFS = {
     "target_role_keywords": ["Software", "Developer", "Engineer", "Testing", "Python", "Web"],
@@ -266,7 +266,7 @@ if __name__ == "__main__":
     scraper.start()
     
     try:
-        search_url = "https://internshala.com/internships/computer-science-internship-in-mumbai/"
+        search_url = "https://internshala.com/internships/computer-science-internship-in-chennai/"
         
         # Scrape
         jobs_list = scraper.navigate_to_internships(search_url)
