@@ -17,7 +17,7 @@ SMTP_SERVER = "smtp.gmail.com" # Example
 SMTP_PORT = 587
 SMTP_USER = os.getenv("EMAIL_ADDRESS")
 SMTP_PASS = os.getenv("EMAIL_PASSWORD")
-RECEIVER_EMAIL = "arunkumar.2645s@gmail.com"
+RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 
 USER_PREFS = {
     "target_role_keywords": ["Software", "Developer", "Engineer", "Testing", "Python", "Web"],
@@ -266,7 +266,7 @@ if __name__ == "__main__":
     scraper.start()
     
     try:
-        search_url = "https://internshala.com/internships/computer-science-internship-in-chennai/"
+        search_url = "https://internshala.com/internships/computer-science-internship-in-mumbai/"
         
         # Scrape
         jobs_list = scraper.navigate_to_internships(search_url)
@@ -290,7 +290,7 @@ if __name__ == "__main__":
             print(f"Score: {score}/100")
             
             # Action Decision
-            if score > 80:
+            if score > 65:
                 print(f"[*] High Score! Checking if email is needed...")
                 if analyzer.should_email(job_data, score):
                     send_email(job_data, score)
