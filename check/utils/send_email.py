@@ -11,7 +11,7 @@ SMTP_SERVER = "smtp.gmail.com" # Example
 SMTP_PORT = 587
 SMTP_USER = os.getenv("EMAIL_ADDRESS")
 SMTP_PASS = os.getenv("EMAIL_PASSWORD")
-RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
+RECEIVER_EMAIL = os.getenv("RECEIVER")
 
 def send_email(job_data, score):
     msg = MIMEMultipart()

@@ -1,35 +1,45 @@
+# Email Configuration Guide
 
-# Email Setup for Automation
+To enable the automated email notification feature in **Velai Vettaiyan**, you need to provide an App Password for your email account. This is a security requirement for most modern email providers (like Gmail) when accessing them via scripts.
 
-Since Google requires secure authentication for scripts (due to 2-Step Verification being enabled on most accounts), you cannot use your standard login password.
+## How to Generate a Google App Password
 
-You need to create an **App Password**. This is a 16-character code that allows your script to send emails safely.
+If you are using Gmail, follow these steps:
 
-## Step-by-Step Instructions
+1.  **Go to your Google Account**:
+    *   Visit [myaccount.google.com](https://myaccount.google.com/).
+    *   Ensure you are logged into the account you want to send emails *from*.
 
-1.  **Open Google Account Settings**:
-    *   Go to [https://myaccount.google.com/](https://myaccount.google.com/).
-    *   On the left, select **Security**.
+2.  **Navigate to Security**:
+    *   Click on the **Security** tab in the left-hand sidebar.
 
-2.  **Enable 2-Step Verification** (if not already enabled):
-    *   Under "Signing in to Google", ensure 2-Step Verification is **ON**.
-    *   If OFF, turn it on and follow the prompts.
+3.  **Enable 2-Step Verification** (if not already enabled):
+    *   Scroll down to the "How you sign in to Google" section.
+    *   Ensure **2-Step Verification** is turned **ON**. App Passwords are *only* available if 2FA is active.
 
-3.  **Generate App Password**:
-    *   Still under "Signing in to Google" (or search "App Passwords" in the search bar at the top):
-        *   Select **App passwords**.
-    *   For "Select app", choose **Mail**.
-    *   For "Select device", choose **Other (Custom name)** and type something like `Velai Vettaiyan Scraper`.
-    *   Click **Generate**.
+4.  **Create an App Password**:
+    *   In the search bar at the top of the page, type **"App passwords"** and select it.
+    *   Alternatively, look for "App passwords" under the "How you sign in to Google" section (sometimes hidden at the bottom).
+    *   You may be asked to sign in again.
 
-4.  **Copy the Password**:
-    *   A 16-character password will appear (e.g., `abcd efgh ijkl mnop`).
-    *   Copy this password (without spaces if possible, though Google accepts them or you can remove them manually).
+5.  **Generate the Password**:
+    *   **App name**: Enter a custom name, e.g., `VelaiVettaiyan`.
+    *   Click **Create**.
 
-5.  **Update `scrape.py`**:
-    *   `SMTP_USER`: Your Gmail address (e.g., `you@gmail.com`).
-    *   `SMTP_PASS`: Paste the 16-character App Password (e.g., `"abcdefghijklmnop"`).
+6.  **Copy the Password**:
+    *   Google will generate a 16-character password (e.g., `abcd efgh ijkl mnop`).
+    *   **Copy this password immediately**. You will not be able to see it again.
 
-## Testing
+7.  **Update your `.env` file**:
+    *   Paste this password into the `EMAIL_PASSWORD` field in your `.env` file inside the `check/` directory.
 
-Once you fill these in `scrape.py`, running the script will automatically send an email to yourself whenever a job scores above 80/100 and passes the LLM check.
+    ```ini
+    EMAIL_ADDRESS=your_email@gmail.com
+    EMAIL_PASSWORD=abcd efgh ijkl mnop  <-- Paste here (spaces are fine)
+    RECEIVER_EMAIL=recipient_email@gmail.com
+    ```
+
+## Troubleshooting
+
+*   **"Username and Password not accepted"**: Ensure you are using the *App Password*, not your main Google account password.
+*   **Connection Refused**: Ensure your firewall or antivirus isn't blocking Python from accessing port 587.
