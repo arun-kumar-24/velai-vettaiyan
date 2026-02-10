@@ -1,23 +1,23 @@
 # Core Components Documentation
 
-This directory contains the primary logic classes that power the application's scraping and analysis capabilities.
+This directory contains the primary logic classes that power the application's automated extraction and analysis capabilities.
 
-## `InternShalaHuman` (`internshala_human.py`)
+## `JobScraper` (`job_scraper.py`)
 
-This class is responsible for the interaction with the target website (Internshala). It is designed to behave like a human user to avoid detection.
+This class handles the browser automation and DOM interaction. It is designed to be a generic frame for extracting list-based data from dynamic websites.
 
-*   **Technology**: Built on **Camoufox**, a wrapper around Playwright that offers advanced anti-detection features.
+*   **Technology**: Built on **Camoufox**, a wrapper around Playwright that offers advanced anti-detection features to ensure consistent rendering.
 *   **Key Features**:
-    *   **`human_wait()` & `human_scroll()`**: Implements randomized delays and scrolling patterns to mimic organic user behavior.
-    *   **`navigate_to_internships(url)`**: Handles the browser navigation to specific category pages.
-    *   **`get_jobs_cards_html()`**: Executes JavaScript directly within the browser context to robustly parse the DOM and extract structured data (Title, Company, Location, Stipend, etc.). This client-side extraction is often more reliable than server-side parsing for dynamic SPAs.
+    *   **Human Simulation**: Implements randomized delays (`human_wait`) and scrolling patterns (`human_scroll`) to mimic organic user behavior.
+    *   **`navigate_to_jobs(url)`**: Handles consistent navigation to the target URL defined in your configuration.
+    *   **`get_jobs_cards_html()`**: Executes JavaScript directly within the browser context. This approach is chosen for its robustness in handling Single Page Applications (SPAs) where data is rendered client-side. It extracts structured fields like Title, Company, and Skills into a normalized format.
 
 ## `JobAnalyzer` (`job_analyzer.py`)
 
-This class integrates the local Large Language Model (LLM) into the workflow.
+This class integrates the local Large Language Model (LLM) into the data processing pipeline.
 
 *   **Technology**: Uses **LangChain** (`langchain_ollama`) to interface with a locally running **Ollama** instance.
 *   **Key Features**:
-    *   **`analyze_job(job_data)`**: Constructs a prompt containing the job details and user preferences. It asks the LLM to return a relevance score (0-100) based on semantic matching (e.g., matching "Manual Testing" skills to a "QA Engineer" role).
-    *   **`should_email(job_data, score)`**: A secondary decision-making step where the LLM decides if a notification is warranted based on the job's attractiveness, providing a "YES/NO" judgment.
+    *   **Semantic Analysis**: `analyze_job(job_data)` constructs a prompt containing the item details and user preferences. It asks the LLM to return a relevance score (0-100), allowing for fuzzy matching (e.g., understanding that "Node.js" is relevant to a "Backend Engineer" preference).
+    *   **Decision Logic**: `should_email` asks the LLM for a binary decision on whether the found item warrants a notification.
     *   **Configuration**: Defaults to the `llama3.2` model but can be configured in the `__init__` method.

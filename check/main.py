@@ -9,7 +9,7 @@ load_dotenv()
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
-from classes.internshala_human import InternShalaHuman
+from classes.job_scraper import JobScraper
 from classes.job_analyzer import JobAnalyzer
 from utils.send_email import send_email
 from utils.db_utils import init_db, is_visited, mark_visited
@@ -24,16 +24,20 @@ USER_PREFS = {
 
 if __name__ == "__main__":
     init_db()
-    scraper = InternShalaHuman()
+    
+    target_url = os.getenv("TARGET_URL")
+    if not target_url:
+        print("[-] Error: TARGET_URL not set in .env")
+        sys.exit(1)
+
+    scraper = JobScraper()
     analyzer = JobAnalyzer(user_prefs=USER_PREFS)
     
     scraper.start()
     
     try:
-        search_url = "https://internshala.com/internships/computer-science-internship-in-chennai/"
-        
         # Scrape
-        jobs_list = scraper.navigate_to_internships(search_url)
+        jobs_list = scraper.navigate_to_jobs(target_url)
         print(f"[*] Processing {len(jobs_list)} jobs...")
 
         for i, job_data in enumerate(jobs_list):

@@ -1,19 +1,17 @@
-# Reference Material Documentation
+# Offline Development Mode
 
-The `refs/` directory plays a critical role in the development and maintenance of the scraping logic.
+The `refs/` directory is central to the project's ethical development strategy.
 
 ## Purpose
 
-Web scraping relies heavily on CSS selectors and DOM structure. Websites like Internshala frequently update their layouts, classes, and ID attributes. 
+Responsible automation development requires minimizing unnecessary traffic to target servers. Repeatedly hitting a live website to test CSS selectors or parsing logic is inefficient and can be disruptive.
 
-This directory contains **static HTML snapshots** (e.g., `demo_about.html`, `demo_card.html`) captured from the live site during development.
+This directory contains **static HTML snapshots** (e.g., `demo_about.html`, `demo_card.html`) captured once and saved locally.
 
-## Usage in Structured Parsing
+## Usage
 
-These files serve as the "ground truth" for engineering the Playwright/Camoufox extraction logic:
+These files serve as "Offline References" for engineering the extraction logic:
 
-1.  **Selector Validation**: Developers load these local HTML files into a browser to test and refine CSS selectors (used in `InternShalaHuman.get_jobs_cards_html()`) without needing to send repeated requests to the live server.
-2.  **Regression Testing**: If the live site changes and scraping breaks, a new snapshot can be saved here to compare with the old structure, allowing for quick identification of what changed (e.g., a class name change from `.stipend-container` to `.money-box`).
-3.  **Offline Development**: Allows for working on the parsing logic (`internshala_human.py`) without an active internet connection or hitting rate limits.
-
-In essence, these files are the **unit test fixtures** for the scraper's parsing engine.
+1.  **Selector Engineering**: Developers load these local HTML files into the browser to test and refine the JavaScript extraction logic (seen in `JobScraper.get_jobs_cards_html()`) in a completely offline environment.
+2.  **Stability Testing**: These snapshots act as immutable test fixtures. If the parsing logic works against these files, valid regressions can be identified if live site structures change.
+3.  **Ethical Compliance**: By developing against local files, we significantly reduce the request volume sent to external servers during the coding and debugging phases.

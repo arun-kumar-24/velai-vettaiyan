@@ -2,7 +2,7 @@ from camoufox.sync_api import Camoufox
 import time
 import random
 
-class InternShalaHuman:
+class JobScraper:
     def __init__(self):
         # 'humanize=True' enables realistic mouse paths and speeds
         self.cm = Camoufox(headless=False, humanize=True)
@@ -91,13 +91,13 @@ class InternShalaHuman:
         print(f"[*] Parsed {len(extracted_data)} jobs.")
         return extracted_data
     
-    def navigate_to_internships(self, category_url):
-        print(f"[*] Navigating to {category_url}")
+    def navigate_to_jobs(self, category_url):
+        print(f"[*] Navigating to target URL")
         # Land on the page
         self.page.goto(category_url, wait_until="domcontentloaded")
         self.human_wait(3, 6)
         
-        # Sometimes a 'Subscribe' or 'Location' popup appears on Internshala
+        # Sometimes a 'Subscribe' or 'Location' popup appears
         # We handle it by pressing Escape or waiting it out
         self.page.keyboard.press("Escape")
         self.human_wait(3, 6)
